@@ -1,0 +1,42 @@
+---
+import { site } from '../../site';
+import NavLinks from './NavLinks.astro';
+import Socials from './Socials.astro';
+
+interface Props {
+  prefix?: '' | '/';
+}
+const { prefix = '' } = Astro.props;
+const buttonClass = 'rounded-sm border border-white/30 px-3 py-1.5 text-xs uppercase tracking-[0.18em] text-white';
+---
+<header class="sticky top-0 z-30 flex items-center justify-between bg-ink px-4 py-3 text-white lg:hidden">
+  <a href={prefix === '/' ? '/' : '#top'} class="flex items-baseline gap-3">
+    <span aria-hidden="true" class="font-display text-2xl">{site.monogram}</span>
+    <span class="text-xs uppercase tracking-[0.2em]">{site.name}</span>
+  </a>
+  <button type="button" data-menu-open aria-controls="mobile-nav" aria-haspopup="dialog" class={buttonClass}>
+    Menu
+  </button>
+</header>
+<dialog
+  id="mobile-nav"
+  aria-label="Site navigation"
+  class="m-0 h-dvh max-h-none w-72 max-w-[85vw] bg-ink p-6 text-mist backdrop:bg-ink/60"
+>
+  <div class="mb-8 flex justify-end">
+    <button type="button" data-menu-close class={buttonClass}>Close</button>
+  </div>
+  <nav aria-label="Mobile">
+    <NavLinks prefix={prefix} />
+  </nav>
+  <Socials class="mt-10" />
+</dialog>
+<script>
+  const dialog = document.getElementById('mobile-nav') as HTMLDialogElement | null;
+  document.querySelector('[data-menu-open]')?.addEventListener('click', () => dialog?.showModal());
+  document.querySelector('[data-menu-close]')?.addEventListener('click', () => dialog?.close());
+  // Close on a backdrop click or when a nav link is followed.
+  dialog?.addEventListener('click', (e) => {
+    if (e.target === dialog || (e.target as Element).closest('a')) dialog.close();
+  });
+</script>

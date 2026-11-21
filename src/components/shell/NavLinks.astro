@@ -1,0 +1,23 @@
+---
+import { navSections } from '../../site';
+
+interface Props {
+  prefix?: '' | '/';
+}
+const { prefix = '' } = Astro.props;
+---
+<ul class="flex flex-col gap-1">
+  {
+    navSections.map((s) => (
+      <li>
+        <a
+          href={`${prefix}#${s.id}`}
+          data-nav-link={s.id}
+          class="block rounded-sm px-3 py-2 text-xs font-medium uppercase tracking-[0.18em] text-mist transition-colors hover:bg-white/5 hover:text-white aria-[current=true]:bg-mauve aria-[current=true]:text-white"
+        >
+          {s.label}
+        </a>
+      </li>
+    ))
+  }
+</ul>

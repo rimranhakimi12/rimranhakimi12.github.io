@@ -1,7 +1,7 @@
 ---
-import '../styles/global.css';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../site';
 ---
-<html lang="en">
-  <head><meta charset="utf-8" /><title>Portfolio</title></head>
-  <body><main id="main"></main></body>
-</html>
+<BaseLayout title={site.name} description={site.description}>
+  <p>Home</p>
+</BaseLayout>
