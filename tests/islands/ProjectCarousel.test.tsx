@@ -88,3 +88,10 @@ test('at most 4 stack tags per card', () => {
   const tags = screen.getByRole('list', { name: /tech stack/i });
   expect(within(tags).getAllByRole('listitem')).toHaveLength(4);
 });
+
+test('track snap padding matches its side padding so the first snap rests at scrollLeft 0', () => {
+  // With px-2 but no scroll-px-2, snapping back stops at scrollLeft 8 and Previous never disables.
+  render(<ProjectCarousel projects={make(5)} />);
+  const track = screen.getByRole('list', { name: 'Projects' });
+  expect(track).toHaveClass('px-2', 'scroll-px-2');
+});

@@ -59,7 +59,7 @@ export default function ProjectCarousel({ projects }: { projects: CardData[] }) 
         ref={trackRef}
         onScroll={update}
         aria-label="Projects"
-        className="-mx-2 flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth px-2 pb-4 pt-2 [scrollbar-width:thin]"
+        className="-mx-2 flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth scroll-px-2 px-2 pb-4 pt-2 [scrollbar-width:thin]"
       >
         {projects.map((project, i) => (
           <li

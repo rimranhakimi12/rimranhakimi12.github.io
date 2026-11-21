@@ -9,7 +9,7 @@ export const site = {
     'I am a recent graduate who enjoys turning designs into fast, accessible interfaces, and wiring them to solid back ends.',
     'I am looking for a junior front-end or full-stack role where I can ship real features and keep learning.',
   ],
-  email: 'hello@example.com',
+  email: 'rimranhakimi@gmail.com',
   socials: [
     { label: 'GitHub', href: 'https://github.com/rimranhakimi12' },
     { label: 'LinkedIn', href: 'https://www.linkedin.com/in/raja-imran-hakimi/' },
