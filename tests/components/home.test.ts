@@ -62,3 +62,15 @@ test('section ids match the nav anchors', async () => {
   const ids = rendered.map((h) => h.match(/<section[^>]*id="([^"]+)"/)?.[1]);
   expect(ids).toEqual(['about', 'skills', 'timeline', 'certificates', 'contact']);
 });
+
+test('skills: groups follow their order field, not id order', async () => {
+  const html = await container.renderToString(Skills, {
+    props: {
+      groups: [
+        { group: 'Back-end', items: ['Node'], order: 2 },
+        { group: 'Front-end', items: ['React'], order: 1 },
+      ],
+    },
+  });
+  expect(html.indexOf('Front-end')).toBeLessThan(html.indexOf('Back-end'));
+});

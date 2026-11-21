@@ -25,7 +25,7 @@ const projects = defineCollection({
 
 const skills = defineCollection({
   loader: file('src/data/skills.yaml'),
-  schema: z.object({ group: z.string(), items: z.array(z.string()) }),
+  schema: z.object({ group: z.string(), items: z.array(z.string()), order: z.number().default(0) }),
 });
 
 const timeline = defineCollection({

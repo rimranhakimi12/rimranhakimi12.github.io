@@ -42,8 +42,8 @@ const ogImageUrl = ogImage && Astro.site ? new URL(ogImage, Astro.site).href : u
     </a>
     <Sidebar prefix={navPrefix} />
     <MobileNav prefix={navPrefix} />
-    <div class="lg:pl-64">
-      <main id="main" tabindex="-1" class="outline-none">
+    <div class="flex min-h-dvh flex-col lg:pl-64">
+      <main id="main" tabindex="-1" class="flex-1 outline-none">
         <slot />
       </main>
       <Footer />

@@ -2,9 +2,9 @@
 import Section from './Section.astro';
 
 interface Props {
-  groups: { group: string; items: string[] }[];
+  groups: { group: string; items: string[]; order?: number }[];
 }
-const { groups } = Astro.props;
+const groups = [...Astro.props.groups].sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
 ---
 <Section id="skills" label="Tech stack" heading="Skills & tools" tone="mist">
   <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
