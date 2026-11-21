@@ -1,0 +1,10 @@
+- id: cert-a
+  name: Placeholder Cloud Practitioner
+  issuer: Placeholder Issuer
+  date: 2025-03-01
+  verifyUrl: https://example.com/verify/a
+- id: cert-b
+  name: Placeholder Front-end Certificate
+  issuer: Placeholder Academy
+  date: 2024-11-01
+  verifyUrl: https://example.com/verify/b

@@ -1,0 +1,12 @@
+- id: frontend
+  group: Front-end
+  items: [TypeScript, React, Astro, Tailwind CSS, HTML & CSS, Accessibility]
+- id: backend
+  group: Back-end
+  items: [Node.js, Express, REST APIs, PostgreSQL, Prisma]
+- id: tools
+  group: Tools & Cloud
+  items: [Git & GitHub, Vite, Vitest, Docker, GitHub Actions]
+- id: design
+  group: Design
+  items: [Figma, Design systems, Responsive layout]
