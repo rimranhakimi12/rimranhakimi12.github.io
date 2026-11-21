@@ -1,7 +1,25 @@
 ---
+import { getCollection } from 'astro:content';
+import About from '../components/home/About.astro';
+import Certificates from '../components/home/Certificates.astro';
+import Contact from '../components/home/Contact.astro';
+import Hero from '../components/home/Hero.astro';
+import ProjectsSection from '../components/home/ProjectsSection.astro';
+import Skills from '../components/home/Skills.astro';
+import Timeline from '../components/home/Timeline.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../site';
+
+const skills = (await getCollection('skills')).map((e) => e.data);
+const timeline = (await getCollection('timeline')).map((e) => e.data);
+const certificates = (await getCollection('certificates')).map((e) => e.data);
 ---
 <BaseLayout title={site.name} description={site.description}>
-  <p>Home</p>
+  <Hero />
+  <About />
+  <ProjectsSection />
+  <Skills groups={skills} />
+  <Timeline entries={timeline} />
+  <Certificates items={certificates} />
+  <Contact />
 </BaseLayout>

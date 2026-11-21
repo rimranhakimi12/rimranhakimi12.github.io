@@ -1,0 +1,25 @@
+---
+import { getImage } from 'astro:assets';
+import ProjectCarousel from '../islands/ProjectCarousel';
+import type { CardData } from '../islands/ProjectCard';
+import { getPublishedProjects } from '../../lib/projects';
+import Section from './Section.astro';
+
+const projects = await getPublishedProjects();
+const cards: CardData[] = await Promise.all(
+  projects.map(async ({ id, data }) => {
+    const img = await getImage({ src: data.cover, widths: [480, 800, 1200], format: 'webp' });
+    return {
+      slug: id,
+      title: data.title,
+      subtitle: data.subtitle,
+      type: data.type,
+      stack: data.stack,
+      cover: { src: img.src, srcset: img.srcSet.attribute, alt: data.coverAlt },
+    };
+  }),
+);
+---
+<Section id="projects" label="Selected work" heading="Projects">
+  <ProjectCarousel client:visible projects={cards} />
+</Section>

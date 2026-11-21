@@ -1,0 +1,27 @@
+---
+import { site } from '../../site';
+---
+<header class="relative overflow-hidden bg-paper px-5 py-20 sm:px-10 lg:flex lg:min-h-[88vh] lg:items-center lg:py-0">
+  <div class="mx-auto grid w-full max-w-5xl items-center gap-10 md:grid-cols-[3fr_2fr]">
+    <div>
+      <p class="text-xs font-semibold uppercase tracking-[0.3em] text-mauve-deep">Hi, I'm</p>
+      <h1 class="mt-4 font-display text-5xl leading-[1.05] text-ink sm:text-6xl lg:text-7xl">{site.name}</h1>
+      <p class="mt-5 text-sm uppercase tracking-[0.3em] text-slate">
+        {site.title} <span aria-hidden="true">·</span> Front-end focused
+      </p>
+      <div aria-hidden="true" class="mt-6 h-px w-20 bg-mauve"></div>
+      <p class="mt-6 max-w-xl text-lg leading-relaxed text-slate">{site.tagline}</p>
+      <div class="mt-10 flex flex-wrap items-center gap-6">
+        <a href="#projects" class="rounded-sm bg-mauve px-6 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-white transition-colors hover:bg-mauve-deep">
+          View projects
+        </a>
+        <a href="#contact" class="border-b border-ink pb-1 text-xs font-semibold uppercase tracking-[0.2em] text-ink transition-colors hover:border-mauve hover:text-mauve-deep">
+          Get in touch
+        </a>
+      </div>
+    </div>
+    <div data-monogram aria-hidden="true" class="hidden select-none justify-center md:flex">
+      <span class="font-display text-[clamp(10rem,22vw,20rem)] leading-none text-mauve/15">{site.monogram}</span>
+    </div>
+  </div>
+</header>

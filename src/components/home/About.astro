@@ -1,0 +1,9 @@
+---
+import { site } from '../../site';
+import Section from './Section.astro';
+---
+<Section id="about" label="About me" heading="Design-minded developer, from pixel to database.">
+  <div class="max-w-3xl space-y-4 text-lg leading-relaxed text-slate">
+    {site.bio.map((p) => <p>{p}</p>)}
+  </div>
+</Section>
