@@ -1,0 +1,115 @@
+---
+import { getImage, Image } from 'astro:assets';
+import { render, type CollectionEntry } from 'astro:content';
+import Lightbox from '../../components/islands/Lightbox';
+import FactsBlock from '../../components/project/FactsBlock.astro';
+import ProjectLinks from '../../components/project/ProjectLinks.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { formatPeriod } from '../../lib/format';
+import { getAdjacent, getPublishedProjects } from '../../lib/projects';
+
+export async function getStaticPaths() {
+  const projects = await getPublishedProjects();
+  return projects.map((project, i) => ({
+    params: { slug: project.id },
+    props: { project, ...getAdjacent(projects, i) },
+  }));
+}
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+  prev?: CollectionEntry<'projects'>;
+  next?: CollectionEntry<'projects'>;
+}
+const { project, prev, next } = Astro.props;
+const { data } = project;
+const { Content } = await render(project);
+
+const gallery = await Promise.all(
+  data.gallery.map(async (g) => ({
+    thumb: (await getImage({ src: g.src, width: 640, format: 'webp' })).src,
+    full: (await getImage({ src: g.src, width: 1600, format: 'webp' })).src,
+    alt: g.alt,
+    caption: g.caption,
+  })),
+);
+const og = await getImage({ src: data.cover, width: 1200, format: 'png' });
+const label = 'text-xs font-semibold uppercase tracking-[0.25em] text-mauve-deep';
+---
+<BaseLayout title={data.title} description={data.subtitle} ogImage={og.src} navPrefix="/">
+  <article class="mx-auto max-w-5xl px-5 py-12 sm:px-10 lg:py-16">
+    <nav aria-label="Breadcrumb" class="mb-8 text-xs uppercase tracking-[0.18em] text-slate">
+      <ol class="flex flex-wrap gap-2">
+        <li><a href="/" class="hover:text-ink hover:underline">Home</a><span aria-hidden="true" class="ml-2">/</span></li>
+        <li><a href="/#projects" class="hover:text-ink hover:underline">Projects</a><span aria-hidden="true" class="ml-2">/</span></li>
+        <li aria-current="page" class="text-ink">{data.title}</li>
+      </ol>
+    </nav>
+
+    <header>
+      <p class={label}>{data.type === 'client' ? 'Client project' : 'Personal project'}</p>
+      <h1 class="mt-3 font-display text-4xl leading-tight text-ink sm:text-5xl">{data.title}</h1>
+      <p class="mt-3 max-w-2xl text-lg text-slate">{data.subtitle}</p>
+    </header>
+
+    <div class="mt-8 space-y-6">
+      <FactsBlock
+        role={data.role}
+        period={formatPeriod(data.period.start, data.period.end)}
+        status={data.status}
+        stack={data.stack}
+      />
+      <ProjectLinks live={data.links.live} source={data.links.source} type={data.type} />
+    </div>
+
+    <Image
+      src={data.cover}
+      alt={data.coverAlt}
+      widths={[640, 1024, 1600]}
+      sizes="(min-width: 1024px) 60rem, 100vw"
+      loading="eager"
+      class="mt-10 aspect-[16/10] w-full rounded-sm object-cover shadow-sm"
+    />
+
+    <div class="case-body mt-12 max-w-3xl">
+      <Content />
+    </div>
+
+    {
+      gallery.length > 0 && (
+        <section aria-labelledby="gallery-heading" class="mt-14">
+          <h2 id="gallery-heading" class="mb-6 font-display text-2xl">Screenshots</h2>
+          <Lightbox client:visible images={gallery} />
+        </section>
+      )
+    }
+
+    {
+      data.architecture && (
+        <section aria-labelledby="architecture-heading" class="mt-14">
+          <h2 id="architecture-heading" class="mb-6 font-display text-2xl">Architecture</h2>
+          <Image src={data.architecture} alt={`Architecture diagram for ${data.title}`} widths={[640, 1024, 1600]} sizes="(min-width: 1024px) 60rem, 100vw" class="w-full rounded-sm ring-1 ring-ink/10" />
+        </section>
+      )
+    }
+
+    <nav aria-label="More projects" class="mt-16 grid gap-4 border-t border-ink/10 pt-8 sm:grid-cols-2">
+      {
+        prev ? (
+          <a href={`/projects/${prev.id}/`} class="group rounded-sm p-4 transition-colors hover:bg-mist/50">
+            <span class={label}>← Previous</span>
+            <span class="mt-1 block font-display text-xl">{prev.data.title}</span>
+          </a>
+        ) : <span />
+      }
+      {
+        next && (
+          <a href={`/projects/${next.id}/`} class="group rounded-sm p-4 text-right transition-colors hover:bg-mist/50">
+            <span class={label}>Next →</span>
+            <span class="mt-1 block font-display text-xl">{next.data.title}</span>
+          </a>
+        )
+      }
+    </nav>
+  </article>
+</BaseLayout>

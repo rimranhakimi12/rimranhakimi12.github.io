@@ -27,6 +27,25 @@
   }
 }
 
+/* Markdown body of project case studies. */
+.case-body {
+  & h2 {
+    @apply mt-10 mb-3 font-display text-2xl text-ink first:mt-0;
+  }
+  & h3 {
+    @apply mt-6 mb-2 text-lg font-semibold;
+  }
+  & p {
+    @apply mb-4 leading-relaxed text-slate;
+  }
+  & ul {
+    @apply mb-4 list-disc space-y-1.5 pl-5 text-slate marker:text-mauve;
+  }
+  & a {
+    @apply text-mauve-deep underline underline-offset-4;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

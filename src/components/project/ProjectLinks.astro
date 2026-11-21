@@ -1,0 +1,26 @@
+---
+interface Props {
+  live?: string;
+  source?: string;
+  type: 'client' | 'personal';
+}
+const { live, source, type } = Astro.props;
+const external = { target: '_blank', rel: 'noopener noreferrer' };
+---
+<div class="flex flex-wrap items-center gap-3">
+  {
+    live && (
+      <a href={live} {...external} class="rounded-sm bg-mauve px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.18em] text-white transition-colors hover:bg-mauve-deep">
+        Live demo<span class="sr-only"> (opens in a new tab)</span>
+      </a>
+    )
+  }
+  {
+    source && (
+      <a href={source} {...external} class="rounded-sm border border-ink/25 px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.18em] text-ink transition-colors hover:bg-ink hover:text-white">
+        Source code<span class="sr-only"> (opens in a new tab)</span>
+      </a>
+    )
+  }
+  {!source && <p class="text-sm italic text-slate">Source is private: {type === 'client' ? 'client project' : 'personal project'}.</p>}
+</div>
