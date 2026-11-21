@@ -38,8 +38,8 @@ test('arrows scroll one card and disable at the ends', async () => {
 
   const prev = screen.getByRole('button', { name: /previous project/i });
   const next = screen.getByRole('button', { name: /next project/i });
-  expect(prev).toBeDisabled();
-  expect(next).toBeEnabled();
+  expect(prev).toHaveAttribute('aria-disabled', 'true');
+  expect(next).toHaveAttribute('aria-disabled', 'false');
 
   await userEvent.click(next);
   expect(scrollBy).toHaveBeenCalledWith(expect.objectContaining({ left: expect.any(Number) }));
@@ -47,8 +47,29 @@ test('arrows scroll one card and disable at the ends', async () => {
 
   track.scrollLeft = 600; // scrollWidth - clientWidth
   fireEvent.scroll(track);
-  expect(next).toBeDisabled();
-  expect(prev).toBeEnabled();
+  expect(next).toHaveAttribute('aria-disabled', 'true');
+  expect(prev).toHaveAttribute('aria-disabled', 'false');
+});
+
+test('an arrow at its end keeps focus and does not scroll', async () => {
+  render(<ProjectCarousel projects={make(5)} />);
+  const track = screen.getByRole('list', { name: 'Projects' });
+  const scrollBy = stubTrack(track, { scrollLeft: 600 });
+  fireEvent.scroll(track);
+  const next = screen.getByRole('button', { name: /next project/i });
+  next.focus();
+  await userEvent.keyboard('{Enter}');
+  expect(next).not.toBeDisabled();
+  expect(next).toHaveFocus();
+  expect(scrollBy).not.toHaveBeenCalled();
+});
+
+test('arrows appear for 3 or fewer projects when the cards overflow', () => {
+  render(<ProjectCarousel projects={make(2)} />);
+  const track = screen.getByRole('list', { name: 'Projects' });
+  stubTrack(track, { scrollWidth: 800, clientWidth: 375 });
+  fireEvent.scroll(track);
+  expect(screen.getByRole('button', { name: /next project/i })).toBeInTheDocument();
 });
 
 test('cards are list items linking to case studies with position text', () => {

@@ -17,6 +17,13 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    /* Keep anchored and focused content clear of the mobile sticky header. */
+    scroll-padding-top: 4rem;
+  }
+  @media (min-width: 64rem) {
+    html {
+      scroll-padding-top: 0;
+    }
   }
   body {
     @apply bg-paper text-ink font-sans antialiased;
@@ -24,6 +31,12 @@
   :focus-visible {
     outline: 2px solid var(--color-mauve);
     outline-offset: 3px;
+  }
+  /* Mauve is too dark to see on ink/slate; use mist there. */
+  .bg-ink :focus-visible,
+  .bg-slate :focus-visible,
+  dialog :focus-visible {
+    outline-color: var(--color-mist);
   }
 }
 

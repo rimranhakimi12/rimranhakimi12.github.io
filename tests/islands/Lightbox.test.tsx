@@ -40,6 +40,19 @@ test('opens at the clicked image, arrows move without wrapping, Esc restores foc
   expect(thumb2).toHaveFocus();
 });
 
+test('Next image at the last image keeps focus inside the dialog', async () => {
+  const user = userEvent.setup();
+  render(<Lightbox images={images} />);
+  await user.click(screen.getByRole('button', { name: /Screen 2/ }));
+  const next = screen.getByRole('button', { name: 'Next image', hidden: true });
+  await user.click(next);
+  expect(next).toHaveAttribute('aria-disabled', 'true');
+  expect(next).not.toBeDisabled();
+  expect(next).toHaveFocus();
+  await user.click(next);
+  expect(screen.getByRole('dialog', { hidden: true })).toHaveAccessibleName('Screen 3');
+});
+
 test('Tab stays within the open dialog', async () => {
   const user = userEvent.setup();
   render(<Lightbox images={images} />);

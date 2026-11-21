@@ -37,8 +37,9 @@ export default function Lightbox({ images }: { images: LightboxImage[] }) {
     }
   };
 
+  // aria-disabled (not disabled) so a focused button keeps focus at the first/last image.
   const navClass =
-    'grid h-11 w-11 place-items-center rounded-full border border-white/30 text-white transition-colors hover:bg-white/10 disabled:opacity-30';
+    'grid h-11 w-11 place-items-center rounded-full border border-white/30 text-white transition-colors hover:bg-white/10 aria-disabled:cursor-not-allowed aria-disabled:opacity-30';
 
   return (
     <>
@@ -82,13 +83,13 @@ export default function Lightbox({ images }: { images: LightboxImage[] }) {
           </div>
           <img src={current.full} alt={current.alt} className="max-h-[78dvh] w-full rounded-sm object-contain" />
           <div className="flex justify-center gap-3">
-            <button type="button" onClick={() => go(-1)} disabled={index === 0} className={navClass} aria-label="Previous image">
+            <button type="button" onClick={() => go(-1)} aria-disabled={index === 0} className={navClass} aria-label="Previous image">
               <span aria-hidden="true">←</span>
             </button>
             <button
               type="button"
               onClick={() => go(1)}
-              disabled={index === images.length - 1}
+              aria-disabled={index === images.length - 1}
               className={navClass}
               aria-label="Next image"
             >
