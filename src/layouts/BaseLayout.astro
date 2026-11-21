@@ -1,0 +1,71 @@
+---
+import '../styles/global.css';
+import { site } from '../site';
+import Footer from '../components/shell/Footer.astro';
+import MobileNav from '../components/shell/MobileNav.astro';
+import Sidebar from '../components/shell/Sidebar.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+  /** '/' on pages other than home, so section links point back to the home page. */
+  navPrefix?: '' | '/';
+}
+const { title, description, ogImage, navPrefix = '' } = Astro.props;
+const fullTitle = title === site.name ? title : `${title} · ${site.name}`;
+const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
+const ogImageUrl = ogImage && Astro.site ? new URL(ogImage, Astro.site).href : undefined;
+---
+<!doctype html>
+<html lang="en" id="top">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    {canonical && <link rel="canonical" href={canonical} />}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    {canonical && <meta property="og:url" content={canonical} />}
+    {ogImageUrl && <meta property="og:image" content={ogImageUrl} />}
+    <meta name="twitter:card" content={ogImageUrl ? 'summary_large_image' : 'summary'} />
+  </head>
+  <body>
+    <a
+      href="#main"
+      class="sr-only rounded-sm bg-mauve px-4 py-2 text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50"
+    >
+      Skip to content
+    </a>
+    <Sidebar prefix={navPrefix} />
+    <MobileNav prefix={navPrefix} />
+    <div class="flex min-h-dvh flex-col lg:pl-64">
+      <main id="main" tabindex="-1" class="flex-1 outline-none">
+        <slot />
+      </main>
+      <Footer />
+    </div>
+    <script>
+      // Mark the nav link of the section currently in view with aria-current.
+      const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-nav-link]')];
+      const ids = [...new Set(links.map((l) => l.dataset.navLink!))];
+      const sections = ids.map((id) => document.getElementById(id)).filter((s) => s !== null);
+      const observer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            for (const link of links) {
+              if (link.dataset.navLink === entry.target.id) link.setAttribute('aria-current', 'true');
+              else link.removeAttribute('aria-current');
+            }
+          }
+        },
+        { rootMargin: '-45% 0px -50% 0px' },
+      );
+      sections.forEach((s) => observer.observe(s));
+    </script>
+  </body>
+</html>

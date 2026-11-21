@@ -1,0 +1,25 @@
+---
+import { site } from '../../site';
+
+interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+---
+<ul class:list={['flex flex-wrap gap-5', className]}>
+  {
+    site.socials.map((s) => (
+      <li>
+        <a
+          href={s.href}
+          rel="me noopener noreferrer"
+          target="_blank"
+          class="text-xs uppercase tracking-[0.18em] text-mist underline-offset-4 hover:text-white hover:underline"
+        >
+          {s.label}
+          <span class="sr-only"> (opens in a new tab)</span>
+        </a>
+      </li>
+    ))
+  }
+</ul>

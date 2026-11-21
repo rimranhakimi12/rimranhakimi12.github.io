@@ -1,0 +1,50 @@
+---
+import { site } from '../../site';
+import Section from './Section.astro';
+---
+<Section id="contact" label="Let's work together" heading="Open to junior front-end and full-stack roles." tone="mist">
+  <div class="grid gap-10 md:grid-cols-2">
+    <p class="text-lg leading-relaxed text-slate">
+      The quickest way to reach me is by email. I usually reply within a day or two.
+    </p>
+    <div class="space-y-6">
+      <div class="flex flex-wrap items-center gap-3">
+        <a href={`mailto:${site.email}`} class="font-display text-2xl text-ink underline decoration-mauve underline-offset-8 hover:text-mauve-deep">
+          {site.email}
+        </a>
+        <button
+          type="button"
+          data-copy={site.email}
+          class="rounded-sm border border-ink/25 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-ink transition-colors hover:bg-ink hover:text-white"
+        >
+          Copy
+        </button>
+        <span data-copy-status aria-live="polite" class="text-sm text-mauve-deep"></span>
+      </div>
+      <ul class="flex gap-6">
+        {
+          site.socials.map((s) => (
+            <li>
+              <a href={s.href} target="_blank" rel="me noopener noreferrer" class="text-xs font-semibold uppercase tracking-[0.18em] text-ink underline-offset-4 hover:underline">
+                {s.label}<span class="sr-only"> (opens in a new tab)</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</Section>
+<script>
+  const button = document.querySelector<HTMLButtonElement>('[data-copy]');
+  const status = document.querySelector<HTMLElement>('[data-copy-status]');
+  button?.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(button.dataset.copy!);
+      if (status) status.textContent = 'Copied';
+    } catch {
+      if (status) status.textContent = 'Copy failed, please select the address';
+    }
+    setTimeout(() => status && (status.textContent = ''), 2500);
+  });
+</script>

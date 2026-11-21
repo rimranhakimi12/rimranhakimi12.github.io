@@ -1,0 +1,20 @@
+- id: junior-dev-parttime
+  kind: part-time
+  org: Placeholder Studio
+  title: Part-time Web Developer
+  start: 2025-02-01
+  bullets: [Build and maintain client marketing sites., Turn Figma designs into responsive pages.]
+- id: internship
+  kind: internship
+  org: Placeholder Tech
+  title: Front-end Developer Intern
+  start: 2024-06-01
+  end: 2024-09-30
+  bullets: [Built dashboard features in React and TypeScript., Improved Lighthouse accessibility score from 78 to 96.]
+- id: degree
+  kind: education
+  org: Placeholder University
+  title: BSc Computer Science
+  start: 2021-09-01
+  end: 2025-06-30
+  bullets: [Final-year project on real-time collaborative editing.]

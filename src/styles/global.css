@@ -1,0 +1,88 @@
+@import "tailwindcss";
+@import "@fontsource-variable/fraunces";
+@import "@fontsource-variable/inter";
+
+@theme {
+  --color-ink: #37353e;
+  --color-slate: #44444e;
+  --color-mauve: #715a5a;
+  --color-mauve-deep: #5e4a4a;
+  --color-mist: #d3dad9;
+  --color-paper: #f4f3f1;
+
+  --font-display: "Fraunces Variable", Georgia, serif;
+  --font-sans: "Inter Variable", system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Keep anchored and focused content clear of the mobile sticky header. */
+    scroll-padding-top: 4rem;
+  }
+  @media (min-width: 64rem) {
+    html {
+      scroll-padding-top: 0;
+    }
+  }
+  body {
+    @apply bg-paper text-ink font-sans antialiased;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-mauve);
+    outline-offset: 3px;
+  }
+  /* Mauve is too dark to see on ink/slate; use mist there. */
+  .bg-ink :focus-visible,
+  .bg-slate :focus-visible,
+  dialog :focus-visible {
+    outline-color: var(--color-mist);
+  }
+}
+
+/* Scroll-driven fade-up; browsers without support simply show content. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      animation: reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 25%;
+    }
+  }
+}
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(2rem);
+  }
+}
+
+/* Markdown body of project case studies. */
+.case-body {
+  & h2 {
+    @apply mt-10 mb-3 font-display text-2xl text-ink first:mt-0;
+  }
+  & h3 {
+    @apply mt-6 mb-2 text-lg font-semibold;
+  }
+  & p {
+    @apply mb-4 leading-relaxed text-slate;
+  }
+  & ul {
+    @apply mb-4 list-disc space-y-1.5 pl-5 text-slate marker:text-mauve;
+  }
+  & a {
+    @apply text-mauve-deep underline underline-offset-4;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

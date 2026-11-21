@@ -1,0 +1,20 @@
+---
+interface Props {
+  role: string;
+  period: string;
+  status: 'live' | 'in-development' | 'completed';
+  stack: string[];
+}
+const { role, period, status, stack } = Astro.props;
+const statusLabel = { live: 'Live', 'in-development': 'In development', completed: 'Completed' }[status];
+const term = 'text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-mauve-deep';
+---
+<dl class="grid grid-cols-2 gap-x-8 gap-y-5 border-y border-ink/10 py-6 sm:grid-cols-4">
+  <div><dt class={term}>Role</dt><dd class="mt-1 text-sm">{role}</dd></div>
+  <div><dt class={term}>Period</dt><dd class="mt-1 text-sm">{period}</dd></div>
+  <div><dt class={term}>Status</dt><dd class="mt-1 text-sm">{statusLabel}</dd></div>
+  <div class="col-span-2 sm:col-span-1">
+    <dt class={term}>Stack</dt>
+    <dd class="mt-1 text-sm">{stack.join(' · ')}</dd>
+  </div>
+</dl>

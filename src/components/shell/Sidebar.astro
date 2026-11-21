@@ -1,0 +1,23 @@
+---
+import { site } from '../../site';
+import NavLinks from './NavLinks.astro';
+import Socials from './Socials.astro';
+
+interface Props {
+  prefix?: '' | '/';
+}
+const { prefix = '' } = Astro.props;
+---
+<aside class="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col bg-ink px-6 py-10 text-mist lg:flex">
+  <a href={prefix === '/' ? '/' : '#top'} class="mb-10 flex flex-col items-center text-center">
+    <span aria-hidden="true" class="font-display text-5xl leading-none text-white">{site.monogram}</span>
+    <span class="mt-4 text-sm uppercase tracking-[0.25em] text-white">{site.name}</span>
+    <span class="mt-1 text-[0.7rem] uppercase tracking-[0.2em] text-mist">{site.title}</span>
+  </a>
+  <nav aria-label="Primary">
+    <NavLinks prefix={prefix} />
+  </nav>
+  <div class="mt-auto border-t border-white/10 pt-6">
+    <Socials />
+  </div>
+</aside>

@@ -1,0 +1,31 @@
+---
+import Section from './Section.astro';
+
+interface Props {
+  items: { name: string; issuer: string; date: Date; verifyUrl: string }[];
+}
+const items = [...Astro.props.items].sort((a, b) => b.date.getTime() - a.date.getTime());
+const monthYear = new Intl.DateTimeFormat('en', { month: 'short', year: 'numeric', timeZone: 'UTC' });
+---
+<Section id="certificates" label="Credentials" heading="Certificates">
+  <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+    {
+      items.map((c) => (
+        <li class="flex flex-col rounded-sm bg-white p-6 shadow-sm ring-1 ring-ink/5">
+          <h3 class="font-display text-xl">{c.name}</h3>
+          <p class="mt-1 text-sm text-slate">
+            {c.issuer} <span aria-hidden="true">·</span> <time datetime={c.date.toISOString().slice(0, 10)}>{monthYear.format(c.date)}</time>
+          </p>
+          <a
+            href={c.verifyUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="mt-auto pt-5 text-xs font-semibold uppercase tracking-[0.18em] text-mauve-deep underline-offset-4 hover:underline"
+          >
+            Verify<span class="sr-only"> {c.name} (opens in a new tab)</span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</Section>
