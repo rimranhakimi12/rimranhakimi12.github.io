@@ -1,10 +1,10 @@
 // Single source for personal details. Never add a phone number here.
 export const site = {
-  name: 'Rimran Hakimi',
+  name: 'Raja Imran Hakimi',
   monogram: 'RH',
   title: 'Full-stack Developer',
   tagline: 'Front-end focused full-stack developer building fast, accessible web apps.',
-  description: 'Portfolio of Rimran Hakimi, a front-end focused full-stack developer.',
+  description: 'Raja Imran\'s portfolio, a front-end focused full-stack developer.',
   bio: [
     'I am a recent graduate who enjoys turning designs into fast, accessible interfaces, and wiring them to solid back ends.',
     'I am looking for a junior front-end or full-stack role where I can ship real features and keep learning.',
@@ -12,7 +12,7 @@ export const site = {
   email: 'hello@example.com',
   socials: [
     { label: 'GitHub', href: 'https://github.com/rimranhakimi12' },
-    { label: 'LinkedIn', href: 'https://www.linkedin.com/in/your-handle' },
+    { label: 'LinkedIn', href: 'https://www.linkedin.com/in/raja-imran-hakimi/' },
   ],
 } as const;
 

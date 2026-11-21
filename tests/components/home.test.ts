@@ -20,7 +20,7 @@ const timeline = [
 
 test('hero: h1 with name, two CTAs, no image, decorative monogram', async () => {
   const html = await container.renderToString(Hero);
-  expect(html).toMatch(/<h1[^>]*>[\s\S]*Rimran Hakimi[\s\S]*<\/h1>/);
+  expect(html).toMatch(/<h1[^>]*>[\s\S]*Raja Imran Hakimi[\s\S]*<\/h1>/);
   expect(html).toMatch(/<a[^>]*href="#projects"[^>]*>[\s\S]*View projects/);
   expect(html).toMatch(/<a[^>]*href="#contact"[^>]*>[\s\S]*Get in touch/);
   expect(html).not.toMatch(/<img\b/);
