@@ -39,3 +39,17 @@ test('no phone-like number appears in visible text', () => {
   const text = html.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>|<[^>]+>/g, ' ');
   expect(text).not.toMatch(/\+?\d[\d\s-]{7,}\d/);
 });
+
+test('footer has no social links, only a back-to-top link', () => {
+  const footer = html.match(/<footer[\s\S]*?<\/footer>/)?.[0] ?? '';
+  expect(footer).not.toMatch(/github\.com|linkedin\.com/);
+  expect(footer).toMatch(/<a[^>]*href="#top"[^>]*>[\s\S]*Back to top/);
+});
+
+test('sidebar socials are labelled icons from /public', () => {
+  const aside = html.match(/<aside[\s\S]*?<\/aside>/)?.[0] ?? '';
+  for (const [icon, name] of [['/github-logo.png', 'GitHub'], ['/linkedin.png', 'LinkedIn']]) {
+    expect(aside).toMatch(new RegExp(`<img[^>]*src="${icon}"[^>]*alt="${name}"`));
+  }
+  expect(aside).not.toMatch(/>\s*GitHub\s*</);
+});

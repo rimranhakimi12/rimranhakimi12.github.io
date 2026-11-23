@@ -11,8 +11,8 @@ export const site = {
   ],
   email: 'rimranhakimi@gmail.com',
   socials: [
-    { label: 'GitHub', href: 'https://github.com/rimranhakimi12' },
-    { label: 'LinkedIn', href: 'https://www.linkedin.com/in/raja-imran-hakimi/' },
+    { label: 'GitHub', href: 'https://github.com/rimranhakimi12', icon: '/github-logo.png' },
+    { label: 'LinkedIn', href: 'https://www.linkedin.com/in/raja-imran-hakimi/', icon: '/linkedin.png' },
   ],
 } as const;
 
