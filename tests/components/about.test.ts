@@ -2,9 +2,9 @@ import { getContainerRenderer } from '@astrojs/react';
 import { experimental_AstroContainer as AstroContainer } from 'astro/container';
 import { loadRenderers } from 'astro:container';
 import { beforeAll, expect, test } from 'vitest';
-import Currently from '../../src/components/about/Currently.astro';
 import Favourites from '../../src/components/about/Favourites.astro';
 import Hobbies from '../../src/components/about/Hobbies.astro';
+import Setup from '../../src/components/about/Setup.astro';
 import Stats from '../../src/components/about/Stats.astro';
 import Tinkering from '../../src/components/about/Tinkering.astro';
 import HomeAbout from '../../src/components/home/About.astro';
@@ -25,7 +25,7 @@ test('each personal section renders nothing when its list is empty', async () =>
   for (const [Component, prop] of [
     [Hobbies, 'items'],
     [Tinkering, 'items'],
-    [Currently, 'items'],
+    [Setup, 'items'],
     [Favourites, 'items'],
     [Stats, 'items'],
   ] as const) {
@@ -38,8 +38,8 @@ test('each personal section renders nothing when its list is empty', async () =>
 test('sections render their items', async () => {
   const hobbies = await container.renderToString(Hobbies, { props: { items: [{ title: 'Guitar', text: 'Strum', photos: [] }] } });
   expect(hobbies).toMatch(/<h3[^>]*>Guitar<\/h3>/);
-  const currently = await container.renderToString(Currently, { props: { items: [{ label: 'Reading', value: 'Berserk' }] } });
-  expect(currently).toMatch(/<dt[^>]*>Reading<\/dt>[\s\S]*<dd[^>]*>Berserk<\/dd>/);
+  const setup = await container.renderToString(Setup, { props: { items: [{ group: 'Desk', gear: ['Ryzen build', '27" monitor'] }] } });
+  expect(setup).toMatch(/<dt[^>]*>Desk<\/dt>[\s\S]*<dd[^>]*>[\s\S]*<li[^>]*>Ryzen build<\/li>[\s\S]*<li[^>]*>27&quot; monitor<\/li>/);
   const stats = await container.renderToString(Stats, { props: { items: [{ value: '+12', label: 'Songs learned' }] } });
   expect(stats).toContain('+12');
   expect(stats).toContain('Songs learned');
@@ -69,7 +69,7 @@ test('about page: text-only hero, every section, links back to projects and cont
     greeting: "Hey, I'm Imran.",
     hobbies: [{ title: 'Guitar', text: 'Strum', photos: [] }],
     tinkering: [{ title: 'PC building', text: 'Builds' }],
-    currently: [{ label: 'Reading', value: 'Manga' }],
+    setup: [{ group: 'Desk', gear: ['PC'] }],
     favourites: [{ title: 'Fav', kind: 'Anime' }],
     stats: [{ value: '+1', label: 'Songs' }],
   };
@@ -77,7 +77,7 @@ test('about page: text-only hero, every section, links back to projects and cont
   const hero = html.match(/<header[^>]*data-about-hero[\s\S]*?<\/header>/)?.[0] ?? '';
   expect(hero).toMatch(/<h1[^>]*>[\s\S]*Hey, I(?:'|&#39;)m Imran\.[\s\S]*<\/h1>/);
   expect(hero).not.toMatch(/<img\b/);
-  for (const heading of ['Things I enjoy', 'Things I tinker with', 'Currently', 'Favourites shelf', 'Fun numbers']) {
+  for (const heading of ['Things I enjoy', 'Things I tinker with', 'My setup', 'Favourites shelf', 'Fun numbers']) {
     expect(html).toContain(heading);
   }
   expect(html).toMatch(/href="\/#projects"/);

@@ -38,15 +38,15 @@ tinkering:
     text: Placeholder, what you edit and which tools you use.
   - title: PC building and repair
     text: Placeholder, builds you have done or machines you have rescued.
-currently:
-  - label: Reading
-    value: Placeholder manga title
-  - label: Watching
-    value: Placeholder anime title
-  - label: Playing
-    value: Placeholder game title
-  - label: Learning
-    value: Placeholder song on guitar
+setup:
+  - group: Rig
+    gear: [Ryzen 5 5600, RTX 2060S, 32GB DDR4, AOC 27" 1440p]
+  - group: Code
+    gear: [VS Code, Claude Code, Prismantis + Herdr, PowerShell]
+  # - group: Music
+  #   gear: [Yamaha F310 Acoustic]
+  - group: Editing
+    gear: [Adobe Premiere Pro, Adobe After Effects, Canva, GIMP]
 favourites:
   - { title: Placeholder 1, kind: Anime, image: ./fav-1.jpg }
   - { title: Placeholder 2, kind: Manga, image: ./fav-2.jpg }
