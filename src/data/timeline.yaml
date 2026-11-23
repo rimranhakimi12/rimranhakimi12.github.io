@@ -1,3 +1,9 @@
+- id: freelance
+  kind: part-time
+  org: Placeholder Freelance
+  title: Freelance Front-end Developer
+  start: 2025-08-01
+  bullets: ["Placeholder, build landing pages for small businesses."]
 - id: junior-dev-parttime
   kind: part-time
   org: Placeholder Studio
@@ -18,3 +24,10 @@
   start: 2021-09-01
   end: 2025-06-30
   bullets: [Final-year project on real-time collaborative editing.]
+- id: diploma
+  kind: education
+  org: Placeholder Polytechnic
+  title: Diploma in Information Technology
+  start: 2018-07-01
+  end: 2021-05-31
+  bullets: ["Placeholder, final-year project or achievement."]

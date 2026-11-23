@@ -45,4 +45,20 @@ const certificates = defineCollection({
   schema: z.object({ name: z.string(), issuer: z.string(), date: z.coerce.date(), verifyUrl: z.url() }),
 });
 
-export const collections = { projects, skills, timeline, certificates };
+// Single-entry collection backing the personal /about/ page.
+const about = defineCollection({
+  loader: glob({ pattern: '*.md', base: './src/content/about' }),
+  schema: ({ image }) =>
+    z.object({
+      greeting: z.string(),
+      hobbies: z
+        .array(z.object({ title: z.string(), text: z.string(), image: image().optional(), imageAlt: z.string().default('') }))
+        .default([]),
+      tinkering: z.array(z.object({ title: z.string(), text: z.string() })).default([]),
+      currently: z.array(z.object({ label: z.string(), value: z.string() })).default([]),
+      favourites: z.array(z.object({ title: z.string(), kind: z.string(), image: image().optional() })).default([]),
+      stats: z.array(z.object({ value: z.string(), label: z.string() })).default([]),
+    }),
+});
+
+export const collections = { projects, skills, timeline, certificates, about };

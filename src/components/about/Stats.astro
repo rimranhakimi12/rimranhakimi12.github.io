@@ -1,0 +1,22 @@
+---
+import Section from '../home/Section.astro';
+
+interface Props {
+  items: { value: string; label: string }[];
+}
+const { items } = Astro.props;
+---
+{
+  items.length > 0 && (
+    <Section id="numbers" label="By the numbers" heading="Fun numbers" tone="slate">
+      <ul class="grid grid-cols-2 gap-8 lg:grid-cols-4">
+        {items.map((s) => (
+          <li>
+            <p class="font-display text-5xl text-white">{s.value}</p>
+            <p class="mt-2 text-xs uppercase tracking-[0.2em] text-mist">{s.label}</p>
+          </li>
+        ))}
+      </ul>
+    </Section>
+  )
+}

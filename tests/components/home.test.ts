@@ -74,3 +74,16 @@ test('skills: groups follow their order field, not id order', async () => {
   });
   expect(html.indexOf('Front-end')).toBeLessThan(html.indexOf('Back-end'));
 });
+
+test('timeline: trail artwork with photos only when photos exist', async () => {
+  const photos = [1, 2, 3, 4].map((n) => ({ src: `/p${n}.webp`, srcset: `/p${n}.webp 400w` }));
+  const withPhotos = await container.renderToString(Timeline, { props: { entries: timeline, photos } });
+  const trail = withPhotos.match(/<div[^>]*data-trail[\s\S]*<\/svg>/)?.[0] ?? '';
+  expect(withPhotos).toMatch(/data-trail[^>]*aria-hidden="true"|aria-hidden="true"[^>]*data-trail/);
+  expect(trail).toContain('<svg');
+  for (let n = 1; n <= 4; n++) expect(withPhotos).toContain(`/p${n}.webp`);
+
+  const without = await container.renderToString(Timeline, { props: { entries: timeline } });
+  expect(without).not.toContain('data-trail');
+  expect(without).not.toMatch(/<img\b/);
+});

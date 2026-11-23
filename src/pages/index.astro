@@ -1,4 +1,5 @@
 ---
+import { getImage } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import About from '../components/home/About.astro';
 import Certificates from '../components/home/Certificates.astro';
@@ -13,13 +14,24 @@ import { site } from '../site';
 const skills = (await getCollection('skills')).map((e) => e.data);
 const timeline = (await getCollection('timeline')).map((e) => e.data);
 const certificates = (await getCollection('certificates')).map((e) => e.data);
+
+// Every image in src/assets/timeline/ appears on the timeline trail, in filename order.
+const photoModules = import.meta.glob<{ default: ImageMetadata }>('../assets/timeline/*.{jpg,jpeg,png,webp}', { eager: true });
+const timelinePhotos = await Promise.all(
+  Object.keys(photoModules)
+    .sort()
+    .map(async (path) => {
+      const img = await getImage({ src: photoModules[path].default, widths: [320, 640], format: 'webp' });
+      return { src: img.src, srcset: img.srcSet.attribute };
+    }),
+);
 ---
 <BaseLayout title={site.name} description={site.description}>
   <Hero />
   <About />
   <ProjectsSection />
   <Skills groups={skills} />
-  <Timeline entries={timeline} />
+  <Timeline entries={timeline} photos={timelinePhotos} />
   <Certificates items={certificates} />
   <Contact />
 </BaseLayout>

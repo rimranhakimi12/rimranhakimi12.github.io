@@ -6,4 +6,10 @@ import Section from './Section.astro';
   <div class="max-w-3xl space-y-4 text-lg leading-relaxed text-slate">
     {site.bio.map((p) => <p>{p}</p>)}
   </div>
+  <a
+    href="/about/"
+    class="group mt-8 inline-block border-b border-ink pb-1 text-xs font-semibold uppercase tracking-[0.2em] text-ink transition-colors hover:border-mauve hover:text-mauve-deep"
+  >
+    More about me <span aria-hidden="true" class="inline-block transition-transform group-hover:translate-x-1">→</span>
+  </a>
 </Section>
