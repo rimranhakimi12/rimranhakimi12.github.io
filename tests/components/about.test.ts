@@ -9,6 +9,7 @@ import Stats from '../../src/components/about/Stats.astro';
 import Tinkering from '../../src/components/about/Tinkering.astro';
 import HomeAbout from '../../src/components/home/About.astro';
 import AboutView from '../../src/components/about/AboutView.astro';
+import guitar from '../../src/content/about/guitar-1.jpg';
 
 let container: AstroContainer;
 beforeAll(async () => {
@@ -29,12 +30,13 @@ test('each personal section renders nothing when its list is empty', async () =>
     [Stats, 'items'],
   ] as const) {
     const html = await container.renderToString(Component, { props: { [prop]: [] } });
-    expect(html.trim()).toBe('');
+    // Ignore the component's hoisted <script>; the markup itself must be empty.
+    expect(html.replace(/<script\b[^>]*><\/script>/g, '').trim()).toBe('');
   }
 });
 
 test('sections render their items', async () => {
-  const hobbies = await container.renderToString(Hobbies, { props: { items: [{ title: 'Guitar', text: 'Strum', imageAlt: '' }] } });
+  const hobbies = await container.renderToString(Hobbies, { props: { items: [{ title: 'Guitar', text: 'Strum', photos: [] }] } });
   expect(hobbies).toMatch(/<h3[^>]*>Guitar<\/h3>/);
   const currently = await container.renderToString(Currently, { props: { items: [{ label: 'Reading', value: 'Berserk' }] } });
   expect(currently).toMatch(/<dt[^>]*>Reading<\/dt>[\s\S]*<dd[^>]*>Berserk<\/dd>/);
@@ -43,11 +45,29 @@ test('sections render their items', async () => {
   expect(stats).toContain('Songs learned');
 });
 
+test('hobby photos stack, top card first, with a shuffle button only when there is more than one', async () => {
+  const photo = (alt: string) => ({ src: guitar, alt });
+  const html = await container.renderToString(Hobbies, {
+    props: {
+      items: [
+        { title: 'Manga', text: 'Read', photos: [photo('One'), photo('Two'), photo('Three')] },
+        { title: 'Guitar', text: 'Strum', photos: [photo('Solo')] },
+      ],
+    },
+  });
+  const [manga, guitarItem] = html.split(/<li\b/).slice(1);
+  expect([...manga.matchAll(/data-pos="(\d)"/g)].map((m) => m[1])).toEqual(['0', '1', '2']);
+  expect([...manga.matchAll(/alt="([^"]+)"/g)].map((m) => m[1])).toEqual(['One', 'Two', 'Three']);
+  expect(manga).toMatch(/<button[^>]*type="button"[^>]*data-stack-next[^>]*aria-label="Show next Manga photo"/);
+  expect(guitarItem).toContain('alt="Solo"');
+  expect(guitarItem).not.toMatch(/<button/);
+});
+
 test('about page: text-only hero, every section, links back to projects and contact', async () => {
   // Fixture data: the content store is not available to tests on a fresh clone (CI).
   const data = {
     greeting: "Hey, I'm Imran.",
-    hobbies: [{ title: 'Guitar', text: 'Strum', imageAlt: '' }],
+    hobbies: [{ title: 'Guitar', text: 'Strum', photos: [] }],
     tinkering: [{ title: 'PC building', text: 'Builds' }],
     currently: [{ label: 'Reading', value: 'Manga' }],
     favourites: [{ title: 'Fav', kind: 'Anime' }],

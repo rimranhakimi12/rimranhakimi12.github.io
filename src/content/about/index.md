@@ -1,28 +1,36 @@
 ---
 # Personal "About me" page (/about/). Every list is optional: an empty or
 # missing list hides its section. Images live next to this file.
+# Hobby photos stack like polaroids; clicking the stack shuffles the top one to the back.
 greeting: Hey, I'm Imran.
 hobbies:
   - title: Guitar, mostly for fun
     text: I pick up the guitar to switch my brain off after a day of code. Placeholder, tell the story of how you started and what you like to play.
-    image: ./guitar.jpg
-    imageAlt: Placeholder photo for guitar
+    photos:
+      - { src: ./guitar-1.jpg, alt: Placeholder photo for guitar 1 }
+      - { src: ./guitar-2.jpg, alt: Placeholder photo for guitar 2 }
   - title: Gym and bouldering
     text: The gym keeps me steady, and bouldering is basically debugging with your whole body. Placeholder, add your favourite climb or routine.
-    image: ./gym-bouldering.jpg
-    imageAlt: Placeholder photo for gym and bouldering
+    photos:
+      - { src: ./gym-bouldering-1.jpg, alt: Placeholder photo for gym and bouldering 1 }
+      - { src: ./gym-bouldering-2.jpg, alt: Placeholder photo for gym and bouldering 2 }
   - title: Manga and anime lover
     text: Weekly chapters, seasonal anime and long debates about the best arcs. Placeholder, mention the series that got you hooked.
-    image: ./manga-anime.jpg
-    imageAlt: Placeholder photo for manga and anime
+    photos:
+      - { src: ./manga-anime-1.jpg, alt: Placeholder photo for manga and anime 1 }
+      - { src: ./manga-anime-2.jpg, alt: Placeholder photo for manga and anime 2 }
+      - { src: ./manga-anime-3.jpg, alt: Placeholder photo for manga and anime 3 }
   - title: Occasional gamer
     text: Not as much as I used to, but a good story or co-op session still gets me. Placeholder, add the games you keep coming back to.
-    image: ./gaming.jpg
-    imageAlt: Placeholder photo for gaming
+    photos:
+      - { src: ./gaming-1.jpg, alt: Placeholder photo for gaming 1 }
+      - { src: ./gaming-2.jpg, alt: Placeholder photo for gaming 2 }
+      - { src: ./gaming-3.jpg, alt: Placeholder photo for gaming 3 }
   - title: Man United, through thick and thin
     text: Matchdays are sacred, even the character-building ones. Placeholder, add your favourite match or player.
-    image: ./man-united.jpg
-    imageAlt: Placeholder photo for Manchester United
+    photos:
+      - { src: ./man-united-1.jpg, alt: Placeholder photo for Manchester United 1 }
+      - { src: ./man-united-2.jpg, alt: Placeholder photo for Manchester United 2 }
 tinkering:
   - title: Video game modding
     text: Placeholder, what you have modded and what you learned from it.

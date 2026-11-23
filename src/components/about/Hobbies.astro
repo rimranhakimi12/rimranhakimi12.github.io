@@ -4,25 +4,40 @@ import { Image } from 'astro:assets';
 import Section from '../home/Section.astro';
 
 interface Props {
-  items: { title: string; text: string; image?: ImageMetadata; imageAlt: string }[];
+  items: { title: string; text: string; photos: { src: ImageMetadata; alt: string }[] }[];
 }
 const { items } = Astro.props;
 ---
 {
   items.length > 0 && (
-    <Section id="hobbies" label="Off the clock" heading="Things I enjoy">
+    // Clip the shuffle swing at the viewport edge so it never adds a horizontal scrollbar.
+    <Section id="hobbies" label="Off the clock" heading="Things I enjoy" class="overflow-x-clip">
       <ul class="space-y-16">
         {items.map((h, i) => (
           <li class="grid items-center gap-8 md:grid-cols-2 md:gap-12">
-            {h.image && (
-              <figure
-                class:list={[
-                  'rounded-sm bg-white p-3 pb-10 shadow-md ring-1 ring-ink/5 transition-transform duration-300 hover:rotate-0',
-                  i % 2 ? 'rotate-2 md:order-2' : '-rotate-2',
-                ]}
-              >
-                <Image src={h.image} alt={h.imageAlt} widths={[480, 800, 1200]} sizes="(min-width: 768px) 28rem, 90vw" class="aspect-[4/3] w-full object-cover" />
-              </figure>
+            {h.photos.length > 0 && (
+              <div class:list={['relative mx-3 my-4', i % 2 && 'md:order-2']}>
+                {/* Polaroids stacked in one grid cell; data-pos 0 is on top. DOM order never changes, so screen readers read every photo once. */}
+                <div data-stack class="photo-stack" style={`--tilt: ${i % 2 ? 2 : -2}deg`}>
+                  {h.photos.map((p, pos) => (
+                    <figure data-pos={pos} class="rounded-sm bg-white p-3 pb-10 shadow-md ring-1 ring-ink/5">
+                      <Image src={p.src} alt={p.alt} widths={[480, 800, 1200]} sizes="(min-width: 768px) 28rem, 90vw" class="aspect-[4/3] w-full object-cover" />
+                    </figure>
+                  ))}
+                </div>
+                {h.photos.length > 1 && (
+                  <button
+                    type="button"
+                    data-stack-next
+                    aria-label={`Show next ${h.title} photo`}
+                    class="absolute inset-0 z-10 cursor-pointer rounded-sm"
+                  >
+                    <span aria-hidden="true" class="absolute right-4 bottom-2.5 text-xs tracking-[0.15em] text-slate">
+                      <span data-stack-count>1</span> / {h.photos.length} ⟳
+                    </span>
+                  </button>
+                )}
+              </div>
             )}
             <div>
               <h3 class="font-display text-2xl text-ink sm:text-3xl">{h.title}</h3>
@@ -34,3 +49,21 @@ const { items } = Astro.props;
     </Section>
   )
 }
+<script>
+  // Send the top polaroid to the back; everything else moves up one place.
+  document.querySelectorAll<HTMLButtonElement>('[data-stack-next]').forEach((button) => {
+    const stack = button.parentElement!.querySelector<HTMLElement>('[data-stack]')!;
+    const cards = [...stack.children] as HTMLElement[];
+    const count = button.querySelector('[data-stack-count]')!;
+    let top = 0;
+    button.addEventListener('click', () => {
+      if (stack.querySelector('[data-leaving]')) return;
+      const leaving = cards[top];
+      top = (top + 1) % cards.length;
+      cards.forEach((card, i) => (card.dataset.pos = String((i - top + cards.length) % cards.length)));
+      leaving.toggleAttribute('data-leaving', true);
+      leaving.addEventListener('animationend', () => leaving.removeAttribute('data-leaving'), { once: true });
+      count.textContent = String(top + 1);
+    });
+  });
+</script>

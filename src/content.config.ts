@@ -52,7 +52,13 @@ const about = defineCollection({
     z.object({
       greeting: z.string(),
       hobbies: z
-        .array(z.object({ title: z.string(), text: z.string(), image: image().optional(), imageAlt: z.string().default('') }))
+        .array(
+          z.object({
+            title: z.string(),
+            text: z.string(),
+            photos: z.array(z.object({ src: image(), alt: z.string().default('') })).default([]),
+          }),
+        )
         .default([]),
       tinkering: z.array(z.object({ title: z.string(), text: z.string() })).default([]),
       currently: z.array(z.object({ label: z.string(), value: z.string() })).default([]),

@@ -69,6 +69,45 @@
   }
 }
 
+/* About page: stacked polaroids. data-pos 0 is the top card; --tilt alternates per hobby. */
+.photo-stack {
+  display: grid;
+  & > * {
+    grid-area: 1 / 1;
+    z-index: 0;
+    transform: translate(-3%, 4%) rotate(calc(var(--tilt) * 2.5));
+    transition: transform 0.4s ease;
+  }
+  & > [data-pos="0"] {
+    z-index: 3;
+    transform: rotate(var(--tilt));
+  }
+  & > [data-pos="1"] {
+    z-index: 2;
+    transform: translate(3%, 2%) rotate(calc(var(--tilt) * -1.5));
+  }
+  & > [data-pos="2"] {
+    z-index: 1;
+  }
+  /* The old top card swings out to the side, then tucks in behind (its new data-pos). */
+  & > [data-leaving] {
+    animation: stack-to-back 0.6s ease-in-out;
+  }
+}
+@keyframes stack-to-back {
+  from {
+    z-index: 4;
+    transform: rotate(var(--tilt));
+  }
+  50% {
+    z-index: 4;
+    transform: translateX(65%) rotate(8deg);
+  }
+  51% {
+    z-index: 0;
+  }
+}
+
 /* Timeline trail draws itself as the section scrolls into view. */
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
