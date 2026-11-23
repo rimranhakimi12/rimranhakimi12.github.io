@@ -53,3 +53,10 @@ test('sidebar socials are labelled icons from /public', () => {
   }
   expect(aside).not.toMatch(/>\s*GitHub\s*</);
 });
+
+test('sidebar has an email icon linking to mailto, opened in place', () => {
+  const aside = html.match(/<aside[\s\S]*?<\/aside>/)?.[0] ?? '';
+  const link = aside.match(/<a[^>]*href="mailto:[^"]+"[^>]*>[\s\S]*?<\/a>/)?.[0] ?? '';
+  expect(link).toMatch(/<img[^>]*src="\/email\.svg"[^>]*alt="Email"/);
+  expect(link).not.toContain('target="_blank"');
+});

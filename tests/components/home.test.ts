@@ -87,3 +87,15 @@ test('timeline: trail artwork with photos only when photos exist', async () => {
   expect(without).not.toContain('data-trail');
   expect(without).not.toMatch(/<img\b/);
 });
+
+test('hero: thumbnails loop seamlessly, decorative, with a pause button', async () => {
+  const thumbs = [1, 2, 3].map((n) => ({ src: `/t${n}.webp`, srcset: `/t${n}.webp 400w` }));
+  const html = await container.renderToString(Hero, { props: { thumbs } });
+  const loop = html.match(/<div[^>]*data-hero-loop[\s\S]*?<\/ul>\s*<\/div>/)?.[0] ?? '';
+  expect(loop).toMatch(/aria-hidden="true"/);
+  // Each thumbnail appears twice so the loop has no visible seam.
+  for (let n = 1; n <= 3; n++) expect(loop.match(new RegExp(`/t${n}\.webp"`, 'g'))).toHaveLength(2);
+  expect(loop).not.toMatch(/<a\b/);
+  expect(html).toMatch(/<button[^>]*data-hero-pause[^>]*aria-pressed="false"/);
+  expect(html).not.toContain('data-monogram');
+});

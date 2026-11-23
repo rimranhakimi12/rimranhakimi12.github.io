@@ -50,6 +50,25 @@
     }
   }
 }
+/* Hero: project thumbnails drifting upward in a seamless loop. */
+.hero-loop {
+  mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hero-loop-track {
+    animation: hero-loop 40s linear infinite;
+  }
+  .hero-loop:hover .hero-loop-track,
+  .hero-loop[data-paused] .hero-loop-track {
+    animation-play-state: paused;
+  }
+}
+@keyframes hero-loop {
+  to {
+    transform: translateY(-50%);
+  }
+}
+
 /* Timeline trail draws itself as the section scrolls into view. */
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {

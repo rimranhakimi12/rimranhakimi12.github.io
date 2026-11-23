@@ -1,5 +1,11 @@
 ---
 import { site } from '../../site';
+
+interface Props {
+  /** Project thumbnails for the decorative loop; without them the monogram shows. */
+  thumbs?: { src: string; srcset?: string }[];
+}
+const { thumbs = [] } = Astro.props;
 ---
 <header class="relative overflow-hidden bg-paper px-5 py-20 sm:px-10 lg:flex lg:min-h-[min(88vh,52rem)] lg:items-center lg:py-0">
   <div class="mx-auto grid w-full max-w-5xl items-center gap-10 md:grid-cols-[3fr_2fr]">
@@ -20,8 +26,53 @@ import { site } from '../../site';
         </a>
       </div>
     </div>
-    <div data-monogram aria-hidden="true" class="hidden select-none justify-center md:flex">
-      <span class="font-display text-[clamp(10rem,22vw,20rem)] leading-none text-mauve/15">{site.monogram}</span>
-    </div>
+    {
+      thumbs.length > 0 ? (
+        <div class="relative hidden lg:block">
+          {/* Decorative: the list is rendered twice and scrolled by half its height, so the loop has no seam. */}
+          <div data-hero-loop aria-hidden="true" class="hero-loop h-[34rem] overflow-hidden">
+            <ul class="hero-loop-track">
+              {[...thumbs, ...thumbs].map((t) => (
+                <li class="pb-5">
+                  <img
+                    src={t.src}
+                    srcset={t.srcset}
+                    sizes="22rem"
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    class="aspect-[16/10] w-full rounded-sm object-cover shadow-md ring-1 ring-ink/5"
+                  />
+                </li>
+              ))}
+            </ul>
+          </div>
+          <button
+            type="button"
+            data-hero-pause
+            aria-pressed="false"
+            aria-label="Pause project slideshow"
+            class="absolute -right-3 bottom-0 grid motion-reduce:hidden h-8 w-8 place-items-center rounded-full bg-paper text-xs text-ink shadow ring-1 ring-ink/10 hover:bg-mist"
+          >
+            <span aria-hidden="true" data-icon>❚❚</span>
+          </button>
+        </div>
+      ) : (
+        <div data-monogram aria-hidden="true" class="hidden select-none justify-center md:flex">
+          <span class="font-display text-[clamp(10rem,22vw,20rem)] leading-none text-mauve/15">{site.monogram}</span>
+        </div>
+      )
+    }
   </div>
 </header>
+<script>
+  const button = document.querySelector<HTMLButtonElement>('[data-hero-pause]');
+  const loop = document.querySelector<HTMLElement>('[data-hero-loop]');
+  button?.addEventListener('click', () => {
+    const paused = button.getAttribute('aria-pressed') !== 'true';
+    button.setAttribute('aria-pressed', String(paused));
+    button.setAttribute('aria-label', `${paused ? 'Play' : 'Pause'} project slideshow`);
+    button.querySelector('[data-icon]')!.textContent = paused ? '▶' : '❚❚';
+    loop?.toggleAttribute('data-paused', paused);
+  });
+</script>

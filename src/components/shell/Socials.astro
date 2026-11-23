@@ -5,21 +5,26 @@ interface Props {
   class?: string;
 }
 const { class: className = '' } = Astro.props;
+
+// Email sits with the social icons here only; the Contact section shows it as text.
+const links = [
+  ...site.socials.map((s) => ({ ...s, external: true })),
+  { label: 'Email', href: `mailto:${site.email}`, icon: '/email.svg', external: false },
+];
 ---
 <ul class:list={['flex flex-wrap gap-3', className]}>
   {
-    site.socials.map((s) => (
+    links.map((s) => (
       <li>
         <a
           href={s.href}
-          rel="me noopener noreferrer"
-          target="_blank"
+          {...(s.external ? { rel: 'me noopener noreferrer', target: '_blank' } : {})}
           title={s.label}
           class="grid h-10 w-10 place-items-center rounded-full bg-mist transition hover:-translate-y-0.5 hover:bg-white motion-reduce:hover:translate-y-0"
         >
           {/* The light disc keeps the black GitHub mark visible on the dark sidebar. */}
           <img src={s.icon} alt={s.label} width="22" height="22" loading="lazy" decoding="async" />
-          <span class="sr-only"> (opens in a new tab)</span>
+          {s.external && <span class="sr-only"> (opens in a new tab)</span>}
         </a>
       </li>
     ))

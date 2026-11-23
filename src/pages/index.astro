@@ -9,6 +9,7 @@ import ProjectsSection from '../components/home/ProjectsSection.astro';
 import Skills from '../components/home/Skills.astro';
 import Timeline from '../components/home/Timeline.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getPublishedProjects } from '../lib/projects';
 import { site } from '../site';
 
 const skills = (await getCollection('skills')).map((e) => e.data);
@@ -25,9 +26,17 @@ const timelinePhotos = await Promise.all(
       return { src: img.src, srcset: img.srcSet.attribute };
     }),
 );
+
+// Published project covers drift through the hero.
+const heroThumbs = await Promise.all(
+  (await getPublishedProjects()).map(async ({ data }) => {
+    const img = await getImage({ src: data.cover, widths: [400, 800], format: 'webp' });
+    return { src: img.src, srcset: img.srcSet.attribute };
+  }),
+);
 ---
 <BaseLayout title={site.name} description={site.description}>
-  <Hero />
+  <Hero thumbs={heroThumbs} />
   <About />
   <ProjectsSection />
   <Skills groups={skills} />
