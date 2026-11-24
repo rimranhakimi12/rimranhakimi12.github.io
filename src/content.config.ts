@@ -60,8 +60,7 @@ const about = defineCollection({
           }),
         )
         .default([]),
-      tinkering: z.array(z.object({ title: z.string(), text: z.string() })).default([]),
-      setup: z.array(z.object({ group: z.string(), gear: z.array(z.string()) })).default([]),
+      tinkering: z.array(z.object({ title: z.string(), text: z.string(), kit: z.array(z.string()).default([]) })).default([]),
       favourites: z.array(z.object({ title: z.string(), kind: z.string(), image: image().optional() })).default([]),
       stats: z.array(z.object({ value: z.string(), label: z.string() })).default([]),
     }),

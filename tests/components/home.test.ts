@@ -51,6 +51,16 @@ test('contact: mailto, copy button, socials, no form', async () => {
   expect(html).not.toMatch(/<form\b/);
 });
 
+test('about: postcard with bio, decorative stamp and postmark, link to the personal page', async () => {
+  const html = await container.renderToString(About);
+  const card = html.match(/<article[^>]*data-postcard[\s\S]*<\/article>/)?.[0] ?? '';
+  expect(card).toMatch(/<h2 id="about-heading"/);
+  expect(card).toMatch(/<div[^>]*aria-hidden="true"[^>]*data-postmark[\s\S]*Kuala Lumpur[\s\S]*\d{4}/);
+  expect(card).toMatch(/<div[^>]*aria-hidden="true"[^>]*data-stamp/);
+  expect(card).toMatch(/<a[^>]*href="\/about\/"[^>]*>[\s\S]*More about me/);
+  expect(html).toMatch(/<section[^>]*class="[^"]*bg-mist/);
+});
+
 test('section ids match the nav anchors', async () => {
   const rendered = await Promise.all([
     container.renderToString(About),

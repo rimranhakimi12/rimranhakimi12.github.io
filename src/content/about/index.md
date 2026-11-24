@@ -32,21 +32,15 @@ hobbies:
       - { src: ./man-united-1.jpg, alt: Placeholder photo for Manchester United 1 }
       - { src: ./man-united-2.jpg, alt: Placeholder photo for Manchester United 2 }
 tinkering:
-  - title: Video game modding
-    text: Placeholder, what you have modded and what you learned from it.
+  - title: Code and modding
+    text: Placeholder, what you have modded, what you learned from it, and the tools behind your day-to-day code.
+    kit: [VS Code, Claude Code, Prismantis + Herdr, PowerShell]
   - title: Video editing
-    text: Placeholder, what you edit and which tools you use.
+    text: Placeholder, what you edit and why.
+    kit: [Adobe Premiere Pro, Adobe After Effects, Canva, GIMP]
   - title: PC building and repair
     text: Placeholder, builds you have done or machines you have rescued.
-setup:
-  - group: Rig
-    gear: [Ryzen 5 5600, RTX 2060S, 32GB DDR4, AOC 27" 1440p]
-  - group: Code
-    gear: [VS Code, Claude Code, Prismantis + Herdr, PowerShell]
-  # - group: Music
-  #   gear: [Yamaha F310 Acoustic]
-  - group: Editing
-    gear: [Adobe Premiere Pro, Adobe After Effects, Canva, GIMP]
+    kit: [Ryzen 5 5600, RTX 2060S, 32GB DDR4, AOC 27" 1440p]
 favourites:
   - { title: Placeholder 1, kind: Anime, image: ./fav-1.jpg }
   - { title: Placeholder 2, kind: Manga, image: ./fav-2.jpg }

@@ -1,15 +1,54 @@
 ---
 import { site } from '../../site';
-import Section from './Section.astro';
+
+// The postcard needs the label and heading inside the card, so this section
+// mirrors Section.astro's wrapper instead of using it.
+const year = new Date().getFullYear();
 ---
-<Section id="about" label="About me" heading="Design-minded developer, from pixel to database.">
-  <div class="max-w-3xl space-y-4 text-lg leading-relaxed text-slate">
-    {site.bio.map((p) => <p>{p}</p>)}
+<section id="about" aria-labelledby="about-heading" class="scroll-mt-16 bg-mist px-5 py-20 text-ink sm:px-10 lg:scroll-mt-0 lg:py-24">
+  <div class="reveal mx-auto max-w-5xl">
+    <article
+      data-postcard
+      class="grid gap-8 rounded-sm bg-postcard p-6 shadow-lg ring-1 ring-ink/5 sm:p-10 md:-rotate-[0.6deg] md:grid-cols-[1fr_auto_16rem] md:gap-10"
+    >
+      {/* Message side */}
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-[0.3em] text-mauve-deep">About me</p>
+        <h2 id="about-heading" class="mt-3 mb-8 font-display text-3xl leading-tight sm:text-4xl">Design-minded developer, from pixel to database.</h2>
+        <div class="space-y-4 text-lg leading-relaxed text-slate">
+          {site.bio.map((p) => <p>{p}</p>)}
+        </div>
+      </div>
+
+      <div aria-hidden="true" class="h-px bg-ink/15 md:h-auto md:w-px"></div>
+
+      {/* Address side: stamp and postmark up top, address lines below */}
+      <div class="flex flex-col gap-10">
+        <div class="relative flex justify-end pt-2">
+          <div aria-hidden="true" data-postmark class="postmark absolute top-6 right-[4.75rem] z-[2] grid h-24 w-24 -rotate-12 place-items-center rounded-full border-2 border-ink/25 text-center text-ink/40">
+            <span class="text-[0.6rem] font-semibold uppercase leading-tight tracking-[0.2em]">
+              {site.location}
+              <span class="mt-1 block font-display text-base tracking-normal">{year}</span>
+            </span>
+          </div>
+          <div aria-hidden="true" data-stamp class="stamp">
+            <span class="grid h-full w-full place-items-center border border-paper/40 bg-mauve font-display text-3xl text-paper">{site.monogram}</span>
+          </div>
+        </div>
+        <div class="mt-auto">
+          <p class="text-[0.7rem] font-semibold uppercase tracking-[0.2em] text-slate">To</p>
+          <p class="border-b border-ink/20 py-2 font-display text-lg italic text-ink">whoever's reading this</p>
+          <p class="border-b border-ink/20 py-2">
+            <a
+              href="/about/"
+              class="group text-xs font-semibold uppercase tracking-[0.2em] text-ink transition-colors hover:text-mauve-deep"
+            >
+              More about me <span aria-hidden="true" class="inline-block transition-transform group-hover:translate-x-1">→</span>
+            </a>
+          </p>
+          <p aria-hidden="true" class="h-9 border-b border-ink/20"></p>
+        </div>
+      </div>
+    </article>
   </div>
-  <a
-    href="/about/"
-    class="group mt-8 inline-block border-b border-ink pb-1 text-xs font-semibold uppercase tracking-[0.2em] text-ink transition-colors hover:border-mauve hover:text-mauve-deep"
-  >
-    More about me <span aria-hidden="true" class="inline-block transition-transform group-hover:translate-x-1">→</span>
-  </a>
-</Section>
+</section>

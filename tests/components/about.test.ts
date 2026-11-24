@@ -4,7 +4,6 @@ import { loadRenderers } from 'astro:container';
 import { beforeAll, expect, test } from 'vitest';
 import Favourites from '../../src/components/about/Favourites.astro';
 import Hobbies from '../../src/components/about/Hobbies.astro';
-import Setup from '../../src/components/about/Setup.astro';
 import Stats from '../../src/components/about/Stats.astro';
 import Tinkering from '../../src/components/about/Tinkering.astro';
 import HomeAbout from '../../src/components/home/About.astro';
@@ -25,7 +24,6 @@ test('each personal section renders nothing when its list is empty', async () =>
   for (const [Component, prop] of [
     [Hobbies, 'items'],
     [Tinkering, 'items'],
-    [Setup, 'items'],
     [Favourites, 'items'],
     [Stats, 'items'],
   ] as const) {
@@ -38,8 +36,13 @@ test('each personal section renders nothing when its list is empty', async () =>
 test('sections render their items', async () => {
   const hobbies = await container.renderToString(Hobbies, { props: { items: [{ title: 'Guitar', text: 'Strum', photos: [] }] } });
   expect(hobbies).toMatch(/<h3[^>]*>Guitar<\/h3>/);
-  const setup = await container.renderToString(Setup, { props: { items: [{ group: 'Desk', gear: ['Ryzen build', '27" monitor'] }] } });
-  expect(setup).toMatch(/<dt[^>]*>Desk<\/dt>[\s\S]*<dd[^>]*>[\s\S]*<li[^>]*>Ryzen build<\/li>[\s\S]*<li[^>]*>27&quot; monitor<\/li>/);
+  const tinkering = await container.renderToString(Tinkering, {
+    props: { items: [{ title: 'PC building', text: 'Builds', kit: ['Ryzen 5', '27" monitor'] }, { title: 'Editing', text: 'Cuts', kit: [] }] },
+  });
+  const [pc, editing] = tinkering.split(/<li class="grid/).slice(1);
+  expect(pc).toMatch(/<h3[^>]*>PC building<\/h3>[\s\S]*The kit[\s\S]*<li[^>]*>Ryzen 5<\/li>[\s\S]*<li[^>]*>27&quot; monitor<\/li>/);
+  expect(editing).toMatch(/<h3[^>]*>Editing<\/h3>/);
+  expect(editing).not.toContain('The kit');
   const stats = await container.renderToString(Stats, { props: { items: [{ value: '+12', label: 'Songs learned' }] } });
   expect(stats).toContain('+12');
   expect(stats).toContain('Songs learned');
@@ -68,8 +71,7 @@ test('about page: text-only hero, every section, links back to projects and cont
   const data = {
     greeting: "Hey, I'm Imran.",
     hobbies: [{ title: 'Guitar', text: 'Strum', photos: [] }],
-    tinkering: [{ title: 'PC building', text: 'Builds' }],
-    setup: [{ group: 'Desk', gear: ['PC'] }],
+    tinkering: [{ title: 'PC building', text: 'Builds', kit: [] }],
     favourites: [{ title: 'Fav', kind: 'Anime' }],
     stats: [{ value: '+1', label: 'Songs' }],
   };
@@ -77,7 +79,7 @@ test('about page: text-only hero, every section, links back to projects and cont
   const hero = html.match(/<header[^>]*data-about-hero[\s\S]*?<\/header>/)?.[0] ?? '';
   expect(hero).toMatch(/<h1[^>]*>[\s\S]*Hey, I(?:'|&#39;)m Imran\.[\s\S]*<\/h1>/);
   expect(hero).not.toMatch(/<img\b/);
-  for (const heading of ['Things I enjoy', 'Things I tinker with', 'My setup', 'Favourites shelf', 'Fun numbers']) {
+  for (const heading of ['Things I enjoy', 'Side quests and the kit behind them', 'Favourites shelf', 'Fun numbers']) {
     expect(html).toContain(heading);
   }
   expect(html).toMatch(/href="\/#projects"/);

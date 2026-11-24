@@ -2,7 +2,6 @@
 import type { CollectionEntry } from 'astro:content';
 import Favourites from './Favourites.astro';
 import Hobbies from './Hobbies.astro';
-import Setup from './Setup.astro';
 import Stats from './Stats.astro';
 import Tinkering from './Tinkering.astro';
 
@@ -24,7 +23,6 @@ const { data } = Astro.props;
 
 <Hobbies items={data.hobbies} />
 <Tinkering items={data.tinkering} />
-<Setup items={data.setup} />
 <Favourites items={data.favourites} />
 <Stats items={data.stats} />
 
